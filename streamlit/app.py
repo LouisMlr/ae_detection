@@ -12,7 +12,7 @@ def request_openai_detection(user_input: str) -> str:
         str: adverse effects detected
     """
     model_ouput = requests.post(
-        url=f"http://fastapi:80/detection?text_message={user_input}"
+        url=f"http://fastapi:8000/detection?text_message={user_input}"
         )
     # extract entities from output
     return model_ouput.json()['entities']
