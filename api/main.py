@@ -19,8 +19,8 @@ def home():
 def detection(text_message: str):
 
     response = openai.Completion.create(
-        #model="text-davinci-003",
-        model="text-curie-001",
+        model="text-davinci-003",
+        #model="text-curie-001",
         prompt=entity_detection(text_message),
         temperature=0.3,
     )
