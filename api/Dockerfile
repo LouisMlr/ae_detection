@@ -13,10 +13,10 @@ RUN pip install --no-cache-dir --upgrade -r ./requirements.txt
 # Copy the ./app directory inside the /code directory.
 COPY . /api
 
-EXPOSE 80
+EXPOSE 8000
 
 # Set the command to run the uvicorn server.
-CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "80"]
+CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8000"]
 
 
 # The --no-cache-dir option tells pip to not save the downloaded packages locally,as that is only if 

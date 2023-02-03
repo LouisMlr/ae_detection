@@ -20,7 +20,7 @@ def request_openai_detection(user_input: str) -> str:
 
 def request_openai_classification(user_input: str) -> str:
     model_ouput = requests.post(
-        url=f"http://fastapi:80/classification?text_message={user_input}"
+        url=f"http://fastapi:8000/classification?text_message={user_input}"
         )
     # extract entities from output
     return model_ouput.json()['entities']

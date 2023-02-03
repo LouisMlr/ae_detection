@@ -32,7 +32,7 @@ def detection(text_message: str):
            }
 
 
-@app.post("/classification", response_model=EntitiesOut))
+@app.post("/classification", response_model=EntitiesOut)
 def classification(text_message: str):
 
     response = openai.Completion.create(

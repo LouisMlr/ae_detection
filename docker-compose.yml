@@ -3,18 +3,12 @@ services:
   fastapi:
     build: api/
     ports:
-      - "80:80"
-    # networks:
-    #   - app_network
+      - "8000:8000"
 
   streamlit:
     build: streamlit/
     ports:
       - "8501:8501"
-    # networks:
-    #   - app_network
+
     depends_on:
       - fastapi
-# networks:
-#   app_network:
-#     driver: bridge
