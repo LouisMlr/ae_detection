@@ -22,7 +22,7 @@ def detection(text_message: str):
         model="text-davinci-003",
         #model="text-curie-001",
         prompt=entity_detection(text_message),
-        temperature=0.3,
+        temperature=0.2,
     )
         
     return {
@@ -32,14 +32,13 @@ def detection(text_message: str):
            }
 
 
-@app.post("/classification", response_model=EntitiesOut)
+@app.post("/detection_v2", response_model=EntitiesOut)
 def classification(text_message: str):
 
     response = openai.Completion.create(
-        #model="text-davinci-003",
-        model="text-curie-001",
-        prompt=entity_classification(text_message),
-        temperature=0.3,
+        model="text-davinci-003",
+        prompt=entity_detection_v2(text_message),
+        temperature=0.2,
     )
         
     return {
@@ -61,40 +60,42 @@ def entity_detection(patient_input):
     return """Detect the adverse effect entities in the text.
 
 Text: J'ai un peu mal à la tête depuis hier 
-Effet(s) secondaire(s): mal à la tête
+Effet secondaire: mal à la tête
 Text: Je me sens fiévreux et j'ai quelques courbatures
-Effet(s) secondaire(s): fiévreux - courbatures
+Effet secondaire: fiévreux - courbatures
 Text: J'ai des nausés et des chutes de cheveux
-Effet(s) secondaire(s): nausés - chutes de cheveux
+Effet secondaire: nausés - chutes de cheveux
 Text: {}
 Effet(s) secondaire(s): """.format(
         patient_input.capitalize()
     )
 
 
-def entity_classification(patient_input):
-    return """Détecte les mentions d'effets secondaires dans le texte parmis la liste suivante : aucun, Fièvre, Sensations d’engourdissement ou de fourmillement dans les mains ou les pieds, Douleurs musculaires et articulaires, Troubles cutanés, Chute des cheveux, Nausées et vomissements, Troubles cardiaques, Troubles du cycle menstruel, Fatigue, Autres effets secondaires)
+def entity_detection_v2(patient_input):
+    return """Détecte les effets secondaires liés aux traitements contre le cancer
 
-Text: J'ai un peu mal à la tête depuis hier 
-Effet(s) secondaire(s): Fièvre
-Text: J'ai des foumis dans les doigts de la main
-Effet(s) secondaire(s): Sensations d’engourdissement ou de fourmillement
+Text: J'ai mal à la gorge quand je mange et j'ai de plus en plus d'aphtes
+Effet: Mucite
+Text: J'ai remarqué des tâches sur mes mains depuis 3 jours. J'ai cependant retrouvé l'appétit
+Effet: Hyperpigmentation
+Text: J'ai remarqué que mes pieds étaient rouges et aussi des cloques sous mon pied droit
+Effet: Syndrôme Main-Pied
 Text: J'ai pris mes médicament sans problème depuis 2 semaines
-Effet(s) secondaire(s): aucun
+Effet: Aucun
 Text: Je me sens fiévreux et j'ai quelques courbatures
-Effet(s) secondaire(s): Fièvre - Douleurs musculaires et articulaires
-Text: Je me sens faible depuis hier j'ai le visage rouge
-Effet(s) secondaire(s): Troubles cutanés
-Text: J'ai perdu quelques méches de cheveux au réveil
-Effet(s) secondaire(s): Chute des cheveux
+Effet: Fièvre - Douleurs musculaires
+Text: J'ai du mal à me tenir debout depuis hier et j'ai le visage rouge avec de l'acné
+Effet: Fatigue - Éruptions cutanées
+Text: J'ai perdu quelques méches de cheveux dans la douche ainsi que des cils
+Effet: Chute des cheveux
 Text: J'ai vomis toute la nuit
-Effet(s) secondaire(s): Nausées et vomissements
+Effet: Troubles digestifs
 Text: J'ai le coeur qui s'accélère depuis vendredi soir
-Effet(s) secondaire(s): Troubles cardiaques
-Text: J'ai un décalage dans mon cycle menstruel
-Effet(s) secondaire(s): Troubles du cycle menstruel
-Text: Je n'ai pas beaucoup de force comparé à la semaine dernière
-Effet(s) secondaire(s): Fatigue
+Effet: Troubles cardiaques
+Text: J'ai un décalage de 7 jours dans mon cycle menstruel
+Effet: Troubles du cycle menstruel
+Text: Je n'ai pas beaucoup de force comparé à la semaine dernière. Mon ongle du pouce gauche noirci
+Effet(s) secondaire(s): Fatigue - Troubles au niveau des ongles
 Text: {}
 Effet(s) secondaire(s): """.format(
         patient_input.capitalize()
