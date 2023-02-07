@@ -21,8 +21,9 @@ def detection(text_message: str):
     response = openai.Completion.create(
         model="text-davinci-003",
         #model="text-curie-001",
-        prompt=entity_detection(text_message),
+        prompt=entity_detection_simple(text_message),
         temperature=0.2,
+        max_tokens=30
     )
         
     return {
@@ -32,13 +33,15 @@ def detection(text_message: str):
            }
 
 
-@app.post("/detection_v2", response_model=EntitiesOut)
-def classification(text_message: str):
+@app.post("/detection_finetuned", response_model=EntitiesOut)
+def detection_finetuned(text_message: str):
 
     response = openai.Completion.create(
-        model="text-davinci-003",
-        prompt=entity_detection_v2(text_message),
+        model="davinci:ft-personal-2023-02-07-13-34-24",
+        prompt=f"""{text_message} ->""",
+        stop=["\n"],
         temperature=0.2,
+        max_tokens=30
     )
         
     return {
@@ -47,31 +50,35 @@ def classification(text_message: str):
            }
 
 
+@app.post("/detection_finetuned_v2", response_model=EntitiesOut)
+def detection_finetuned_v2(text_message: str):
+
+    response = openai.Completion.create(
+        model="davinci:ft-personal-2023-02-07-16-40-56",
+        prompt=f"""{text_message} \n\n###\n\n""",
+        stop=[" END"],
+        temperature=0.2,
+        max_tokens=30
+    )
+        
+    return {
+        "input_text": text_message, 
+        "entities": response.choices[0].text,
+           }
+
 @app.post("/test")
 def test(text_message: str):
         
     return {
             "input_text": text_message, 
-            "entities":  "mal de ventre",
+            "entities":  "Fatigue",
            }
 
 
-def entity_detection(patient_input):
-    return """Detect the adverse effect entities in the text.
-
-Text: J'ai un peu mal à la tête depuis hier 
-Effet secondaire: mal à la tête
-Text: Je me sens fiévreux et j'ai quelques courbatures
-Effet secondaire: fiévreux - courbatures
-Text: J'ai des nausés et des chutes de cheveux
-Effet secondaire: nausés - chutes de cheveux
-Text: {}
-Effet(s) secondaire(s): """.format(
-        patient_input.capitalize()
-    )
-
-
-def entity_detection_v2(patient_input):
+def entity_detection_simple(patient_input):
+    """
+    Try the entities extraction without fine tuning: few-shot learning approach
+    """
     return """Détecte les effets secondaires liés aux traitements contre le cancer
 
 Text: J'ai mal à la gorge quand je mange et j'ai de plus en plus d'aphtes
@@ -88,20 +95,21 @@ Text: J'ai du mal à me tenir debout depuis hier et j'ai le visage rouge avec de
 Effet: Fatigue - Éruptions cutanées
 Text: J'ai perdu quelques méches de cheveux dans la douche ainsi que des cils
 Effet: Chute des cheveux
+Text: Je n'ai pas beaucoup de force comparé à la semaine dernière. Mon ongle du pouce gauche noirci
+Effet: Fatigue - Troubles au niveau des ongles
 Text: J'ai vomis toute la nuit
 Effet: Troubles digestifs
 Text: J'ai le coeur qui s'accélère depuis vendredi soir
 Effet: Troubles cardiaques
 Text: J'ai un décalage de 7 jours dans mon cycle menstruel
 Effet: Troubles du cycle menstruel
-Text: Je n'ai pas beaucoup de force comparé à la semaine dernière. Mon ongle du pouce gauche noirci
-Effet(s) secondaire(s): Fatigue - Troubles au niveau des ongles
 Text: {}
-Effet(s) secondaire(s): """.format(
+Effet: """.format(
         patient_input.capitalize()
     )
 
 
 if __name__ == '__main__':
     uvicorn.run(app)
+
 
