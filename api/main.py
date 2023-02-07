@@ -10,17 +10,11 @@ app = FastAPI()
 openai.api_key = settings.OPENAI_API_KEY
 
 
-@app.get("/")
-def home():
-    return {"message": "Hello World"}
-
-
 @app.post("/detection", response_model=EntitiesOut)
 def detection(text_message: str):
 
     response = openai.Completion.create(
         model="text-davinci-003",
-        #model="text-curie-001",
         prompt=entity_detection_simple(text_message),
         temperature=0.2,
         max_tokens=30
@@ -29,7 +23,6 @@ def detection(text_message: str):
     return {
         "input_text": text_message, 
         "entities": response.choices[0].text,
-        #"api": openai.api_key
            }
 
 
@@ -37,24 +30,7 @@ def detection(text_message: str):
 def detection_finetuned(text_message: str):
 
     response = openai.Completion.create(
-        model="davinci:ft-personal-2023-02-07-13-34-24",
-        prompt=f"""{text_message} ->""",
-        stop=["\n"],
-        temperature=0.2,
-        max_tokens=30
-    )
-        
-    return {
-        "input_text": text_message, 
-        "entities": response.choices[0].text,
-           }
-
-
-@app.post("/detection_finetuned_v2", response_model=EntitiesOut)
-def detection_finetuned_v2(text_message: str):
-
-    response = openai.Completion.create(
-        model="davinci:ft-personal-2023-02-07-16-40-56",
+        model="davinci:ft-personal-2023-02-07-17-31-26",
         prompt=f"""{text_message} \n\n###\n\n""",
         stop=[" END"],
         temperature=0.2,
@@ -66,6 +42,7 @@ def detection_finetuned_v2(text_message: str):
         "entities": response.choices[0].text,
            }
 
+
 @app.post("/test")
 def test(text_message: str):
         
@@ -73,6 +50,11 @@ def test(text_message: str):
             "input_text": text_message, 
             "entities":  "Fatigue",
            }
+
+
+@app.get("/")
+def home():
+    return {"message": "Hello World"}
 
 
 def entity_detection_simple(patient_input):
