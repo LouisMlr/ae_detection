@@ -2,7 +2,7 @@
 
 End-to-end deployment of a Streamlit application to detect adverse effects from free text using OpenAI GPT-3 model.
 
-![My Image](app_screenshot.png)
+![My Image](screenshot_app.png)
 
 ## Launch the App locally
 
