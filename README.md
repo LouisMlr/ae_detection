@@ -1,5 +1,7 @@
 # Adverse Effect Detection
 
+End-to-end deployment of a Streamlit application to detect adverse effects from free text using OpenAI GPT-3 model.
+
 ## Launch the App locally
 
 1. Navigate into the project directory
@@ -21,7 +23,7 @@
    $ pip install -r api/requirements.txt streamlit/requirements.txt
    ```
 
-4. Add your [API key] to the `.env` file
+4. Add your [OpenAI API key] to the `.env` file
 
 5. Run the FastAPI service
 
@@ -89,5 +91,5 @@ To detach from the TMUX session, use: Ctrl+B and then D
 To reattach to the same session, use:
 
 ```bash
-$ tmux attach -t StreamSession
+$ tmux attach -t StreamlitSession
 ```
