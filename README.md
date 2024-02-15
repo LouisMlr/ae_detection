@@ -81,7 +81,7 @@ Streamlit App is running at [http://127.0.0.1:8501](http://127.0.0.1:8501)
    $ sudo apt-get install docker-compose
    ```
 
-5. (optional) Start a new tmux session
+5. (Optional) Start a new tmux session
 
    ```bash
    $ sudo yum install tmux
