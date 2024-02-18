@@ -52,7 +52,7 @@ Streamlit App is running at [http://127.0.0.1:8501](http://127.0.0.1:8501)
    $ docker-compose up
    ```
 
-## Launch the App remotely using Docker-compose
+## Launch the App remotely using docker-compose
 
 1. Create an EC2 instance (Amazon Linux AMI)
 2. In the security group, allow inbound traffic on port 8000 and 8501.
