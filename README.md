@@ -96,4 +96,3 @@ To reattach to the same session, use:
 $ tmux attach -t StreamlitSession
 ```
 
-
