@@ -95,4 +95,3 @@ To reattach to the same session, use:
 ```bash
 $ tmux attach -t StreamlitSession
 ```
-
