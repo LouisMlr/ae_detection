@@ -90,7 +90,6 @@ Streamlit App is running at [http://127.0.0.1:8501](http://127.0.0.1:8501)
 
 To detach from the TMUX session, use: Ctrl+B and then D
 
-
 To reattach to the same session, use:
 
 ```bash
